@@ -1,5 +1,6 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
 import { prisma } from "../../../lib/prisma/prisma"
 
 type ResponseConnect = {
@@ -45,11 +46,6 @@ export async function criarInstanciaWhatsApp (emailUsuario: string): Promise<Res
         body: JSON.stringify({
             instanceName: emailUsuario.replaceAll("@", "_").replaceAll(".", "_"),
             qrcode: true,
-/*             webhook: "http://test-app:3000/api/evolution-api/webhook",
-            webhook_by_events: true,
-            events: [
-                "CONNECTION_UPDATE"
-            ] */
         })
     })
 

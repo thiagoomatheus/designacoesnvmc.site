@@ -6,12 +6,15 @@ import { conectarWhatsApp, criarInstanciaWhatsApp, desconectarWhatsApp, verifica
 import { useState } from "react"
 import Image from "next/image"
 import Modal from "@/app/componentes/modal"
+import { useRouter } from "next/navigation"
 
 export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario }: {
     instancia: string | null
     status: "open" | "close" | undefined
     emailUsuario: string
 } ) {
+
+    const router = useRouter()
     
     const [statusInstancia, setStatusInstancia] = useState(status)
     const [qrcode, setQrcode] = useState<string | undefined>(undefined)
@@ -32,6 +35,8 @@ export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario
                         toast.success("Seu WhatsApp foi desconectado! Conecte para enviar mensagens.", {id: toastId})
 
                     })
+
+                    router.refresh()
                     
                     setStatusInstancia("close")
 
@@ -49,6 +54,8 @@ export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario
                         if (result.error && !result.data?.qrcode) toast.error(result.error.message, {id: toastId})
                         
                         setQrcode(result.data!.qrcode)
+
+                        router.refresh()
 
                         return toast.success("QR Code gerado!", {id: toastId})
 
@@ -112,6 +119,8 @@ export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario
 
                                 setStatusInstancia("open")
 
+                                router.refresh()
+
                                 return toast.success("WhatsApp conectado!", {id: toastId})
 
                             }, 4000)
@@ -121,7 +130,7 @@ export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario
                     </div>
                 </Modal>
             )}
-            {!instancia || !statusInstancia && (
+            {(!instancia || !statusInstancia) && (
                 <>
                     <Btn onClick={async () => {
 
@@ -136,6 +145,8 @@ export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario
                         if (resultConectarWhatsApp.error && !resultConectarWhatsApp.data?.qrcode) toast.error(resultConectarWhatsApp.error.message, { id: toastId })
                         
                         setQrcode(resultConectarWhatsApp.data!.qrcode)
+
+                        router.refresh()
 
                         return toast.success("QR Code gerado!", { id: toastId })
 
