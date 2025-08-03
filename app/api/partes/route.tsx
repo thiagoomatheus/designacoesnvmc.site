@@ -3,7 +3,7 @@
 import { auth } from "@/app/lib/auth/auth"
 import axios from "axios"
 import * as cheerio from "cheerio"
-import { add, format, getWeek } from "date-fns"
+import { add, endOfWeek, format, getWeek, isSameMonth, isSameYear, startOfWeek } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { redirect } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -83,8 +83,92 @@ async function getPartes(year: number, week: number, layout: number) {
     return partes
 }
 
-async function scrapePartes(ano: number, numeroSemana: number, diaReuniao: string) {
-    const response = await axios.get(`https://wol.jw.org/pt/wol/meetings/r5/lp-t/${ano}/${numeroSemana}`)
+function formataPeriodo(dia: number, mes: number, ano: number) {
+
+    let periodoApostilaFormatado: string = "";
+    
+    let mesApostila: "janeiro-fevereiro" | "marco-abril" | "maio-junho" | "julho-agosto" | "setembro-outubro" | "novembro-dezembro" = "janeiro-fevereiro";
+
+    let periodoSemana: string = "";
+    
+    switch (mes) {
+        case 1:
+            mesApostila = "janeiro-fevereiro";
+            break;
+        case 2:
+            mesApostila = "janeiro-fevereiro";
+            break;
+        case 3:
+            mesApostila = "marco-abril";
+            break;
+        case 4:
+            mesApostila = "marco-abril";
+            break;
+        case 5:
+            mesApostila = "maio-junho";
+            break;
+        case 6:
+            mesApostila = "maio-junho";
+            break;
+        case 7:
+            mesApostila = "julho-agosto";
+            break;
+        case 8:
+            mesApostila = "julho-agosto";
+            break;
+        case 9:
+            mesApostila = "setembro-outubro";
+            break;
+        case 10:
+            mesApostila = "setembro-outubro";
+            break;
+        case 11:
+            mesApostila = "novembro-dezembro";
+            break;
+        case 12:
+            mesApostila = "novembro-dezembro";
+        default:
+            break;
+    }
+
+    const segundaData = startOfWeek(new Date(ano, mes, dia), { locale: ptBR, weekStartsOn: 1 });
+    const domingoData = endOfWeek(new Date(ano, mes, dia), { locale: ptBR, weekStartsOn: 1 });
+    
+    const mesmoAno = isSameYear(segundaData, domingoData);
+    const mesmoMes = isSameMonth(segundaData, domingoData);
+
+    if (mesmoMes) {
+        const mesApostila = format(segundaData, "MMMM", { locale: ptBR, weekStartsOn: 1 });
+        periodoSemana = `${segundaData.getDate()}-${domingoData.getDate()}-de-${mesApostila}-de-${ano}`;
+    } else {
+        const domingoDiaPrimeiro = domingoData.getDate() === 1;
+        if (!mesmoAno) {
+            const segundaFormatado = format(segundaData, "d-'de'-MMMM-'de'-yyyy", { locale: ptBR, weekStartsOn: 1 });
+            const domingoFormatado = format(domingoData, (domingoDiaPrimeiro ? "d'º'-'de'-MMMM-'de'-yyyy" : "d-'de'-MMMM-'de'-yyyy"), { locale: ptBR, weekStartsOn: 1 });
+            periodoSemana = `${segundaFormatado}-${domingoFormatado}`;
+        } else {
+            const segundaFormatado = format(segundaData, "d-'de'-MMMM", { locale: ptBR, weekStartsOn: 1 });
+            const domingoFormatado = format(domingoData, (domingoDiaPrimeiro ? "d'º'-'de'-MMMM" : "d-'de'-MMMM"), { locale: ptBR, weekStartsOn: 1 });
+            periodoSemana = `${segundaFormatado}-${domingoFormatado}-de-${ano}`;
+        }
+    }
+
+    periodoApostilaFormatado = `${mesApostila}-${ano}-mwb/Programação-da-Reunião-Vida-e-Ministério-para-${periodoSemana}`
+
+    return periodoApostilaFormatado;
+}
+
+async function scrapePartes(data: Date,numeroSemana: number, diaReuniao: string) {
+
+    const dia = data.getDate();
+    const mes = data.getMonth() + 1;
+    const ano = data.getFullYear();
+
+    const periodo = formataPeriodo(dia, mes, ano)
+
+    const url: string = `https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/${periodo}`;
+
+    const response = await axios.get(url)
     const html = response.data
     const tempo: string[] = []
     const $ = cheerio.load(html)
@@ -296,7 +380,7 @@ export async function GET(req:NextRequest) {
                 ano++
             }
             if (!semanasDb.includes(`${numeroSemana}/${ano}`)) {
-                partes.push(await scrapePartes(ano, numeroSemana, format(data, "dd 'de' MMMM", { locale: ptBR })))
+                partes.push(await scrapePartes(data, numeroSemana, format(data, "dd 'de' MMMM", { locale: ptBR })))
             }
         }
 
