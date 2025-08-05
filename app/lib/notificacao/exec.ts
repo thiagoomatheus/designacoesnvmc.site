@@ -7,3 +7,6 @@ prisma.semana.deleteMany({
         }
     }
 })
+.then(() => {
+    console.log("Semanas deletadas")
+})
