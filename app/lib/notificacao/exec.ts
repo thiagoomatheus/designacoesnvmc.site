@@ -1,4 +1,4 @@
-import { prisma } from "./app/lib/prisma/prisma";
+import { prisma } from "./prisma";
 
 prisma.semana.deleteMany({
     where: {
