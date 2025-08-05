@@ -94,7 +94,7 @@ function formataPeriodo(dia: number, mes: number, ano: number) {
 
     let periodoSemana: string = "";
     
-    switch (mes) {
+    switch (mes + 1) {
         case 1:
             mesApostila = "janeiro-fevereiro";
             break;
