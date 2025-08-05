@@ -85,6 +85,9 @@ async function getPartes(year: number, week: number, layout: number) {
 
 function formataPeriodo(dia: number, mes: number, ano: number) {
 
+    console.log("Recebido:" + dia, mes, ano);
+    
+
     let periodoApostilaFormatado: string = "";
     
     let mesApostila: "janeiro-fevereiro" | "marco-abril" | "maio-junho" | "julho-agosto" | "setembro-outubro" | "novembro-dezembro" = "janeiro-fevereiro";
@@ -161,7 +164,7 @@ function formataPeriodo(dia: number, mes: number, ano: number) {
 async function scrapePartes(data: Date,numeroSemana: number, diaReuniao: string) {
 
     const dia = data.getDate();
-    const mes = data.getMonth() + 1;
+    const mes = data.getMonth();
     const ano = data.getFullYear();
 
     const periodo = formataPeriodo(dia, mes, ano)
