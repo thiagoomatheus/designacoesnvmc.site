@@ -216,7 +216,7 @@ async function scrapePartes(data: Date,numeroSemana: number, diaReuniao: string)
         })
     })
 
-    $("h3.du-color--maroon-600:contains(.)").each(function () {
+    $(".du-color--maroon-600:contains(.)").each(function () {
         const vida = $(this).text()
         partes.vida.push({
             nome: vida.length > 62 ? `${vida.slice(0, 62)}...` : vida,

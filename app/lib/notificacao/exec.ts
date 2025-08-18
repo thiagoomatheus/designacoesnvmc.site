@@ -11,7 +11,6 @@ prisma.semana.deleteMany({
     console.log("Semanas deletadas")
 })
 
-
 prisma.semana.findMany({
     where: {
         semana: {
