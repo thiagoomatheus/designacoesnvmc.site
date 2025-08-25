@@ -37,7 +37,14 @@ export default function useDesignacaoes() {
         const result = await fetch(`/api/partes?dateFrom=${dateFrom.replaceAll("/", "")}&layout=${layout === "quinzenal" ? 2 : layout === "mensal_padrao" ? 4 : 1}`)
         const response: {partes?: Partes[], error?: {message: string} } = await result.json()
         if (response.error) return response.error.message
-        dispatch({type: "adicionandoDados", semanas: response.partes!})
+
+        const semanasOrdenadasPeloNumeroDaSemana = response.partes!.sort((a, b) => {
+            if (a.semana < b.semana) return -1
+            if (a.semana > b.semana) return 1
+            return 0
+        })
+
+        dispatch({type: "adicionandoDados", semanas: semanasOrdenadasPeloNumeroDaSemana})
     }
 
     function adicionandoDesignacoes(formData: FormData, data: Partes) {
