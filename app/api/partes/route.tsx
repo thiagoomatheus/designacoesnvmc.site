@@ -12,7 +12,7 @@ import { Parte as ParteType, Partes } from "@/app/lib/types/types"
 import { prisma } from "@/app/lib/prisma/prisma"
 import { Parte, Semana } from "@prisma/client"
 
-async function getPartes(year: number, week: number, layout: number) {
+async function getPartes(year: number, week: number, layout: number, cong: number) {
     const semanas: string[] = []
 
     for (let i = 0; i < layout; i++) {
@@ -32,6 +32,9 @@ async function getPartes(year: number, week: number, layout: number) {
         include: {
             partes: true,
             designacao: {
+                where: {
+                    cong: cong
+                },
                 select: {
                     diaReuniao: true,
                     parteReference: true,
@@ -332,9 +335,22 @@ async function scrapePartes(data: Date,numeroSemana: number, diaReuniao: string)
 }
 
 export async function GET(req:NextRequest) {
+
+    const sessao = await auth()
+
+    if (!sessao || !sessao.user ) return redirect("/login")
+
+    const usuario = await prisma.usuario.findUnique({ where: { email: sessao.user.email! } })
+
+    if (!usuario) return redirect("/login")
+
+    if (usuario.cong === null) {
+        return NextResponse.json({ error: { message: "Defina a congregação nas configurações" } }, { status: 500 })
+    }
+
     const getPartesSchema = z.object({
         dateFrom: z.string(),
-        layout: z.number()
+        layout: z.number(),
     }, {
         message: "Dados recebidos incorretos"
     })
@@ -360,7 +376,7 @@ export async function GET(req:NextRequest) {
 
         const week = getWeek(new Date(year, (month - 1), day), { weekStartsOn: 1 })
 
-        const result = await getPartes(week !== 1 ? year : month !== 12 ? year : year + 1, week, layout)
+        const result = await getPartes(week !== 1 ? year : month !== 12 ? year : year + 1, week, layout, usuario.cong)
 
         if (result !== false && result.length === layout) return NextResponse.json({ partes: result }, { status: 200 })
 
