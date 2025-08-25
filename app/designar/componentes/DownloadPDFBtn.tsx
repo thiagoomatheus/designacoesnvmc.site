@@ -34,21 +34,21 @@ export default function DownloadPDFBtn( { designacoes }: { designacoes: Partes[]
             key={`tempo-${index}`}
             style={{flexBasis: "10%", borderRight: "1px solid black", textAlign: "center", fontFamily: "Helvetica-Bold"}}
           >
-            {parte.tempo}
+            {parte.tempo?.trim()}
           </Text>
 
           <Text
             key={`parte-${index}`}
             style={{flexBasis: "65%", borderRight: "1px solid black", paddingLeft: "6px"}}
           >
-            {parte.nome}
+            {parte.nome?.trim()}
           </Text>
 
           <Text
             key={`participante-${index}`}
             style={{flexBasis: "25%", paddingLeft: "6px"}}
           >
-            - {parte.participante}
+            - {parte.participante?.trim()}
           </Text>
         </>
       ))}
@@ -60,19 +60,19 @@ export default function DownloadPDFBtn( { designacoes }: { designacoes: Partes[]
 
       <View style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", borderBottom: "1px solid black"}}>
         <Text style={{fontSize: "9pt", fontFamily: "Helvetica-Bold", flexBasis: "18%", backgroundColor: "#d9d9d9", paddingLeft: "6px"}}>
-          {designacoes.diaReuniao}
+          {designacoes.diaReuniao.trim()}
         </Text>
 
         <Text style={styles.canticos}>
-          {designacoes.canticos[0]}
+          {designacoes.canticos[0].trim()}
         </Text>
 
         <Text style={{borderRight: "1px solid black", flexBasis: "25%", paddingLeft: "6px"}}>
-          Oração: {designacoes?.outros.find((parte) => parte.nome === "Oração Inicial")?.participante}
+          Oração: {designacoes?.outros.find((parte) => parte.nome === "Oração Inicial")?.participante?.trim()}
         </Text>
 
         <Text style={{flexBasis: "45%", paddingLeft: "6px"}}>
-          Comentários iniciais: {designacoes?.outros.find((parte) => parte.nome === "Presidente")?.participante}
+          Comentários iniciais: {designacoes?.outros.find((parte) => parte.nome === "Presidente")?.participante?.trim()}
         </Text>
       </View>
 
@@ -82,7 +82,7 @@ export default function DownloadPDFBtn( { designacoes }: { designacoes: Partes[]
         </Text>
 
         <Text style={{fontFamily: "Helvetica-Bold", backgroundColor: "#7d4d98", color: "white", textAlign: "center", flexBasis: "20%", borderRight: "1px solid black", borderLeft: "1px solid black"}}>
-          {designacoes?.capitulos}
+          {designacoes?.capitulos.trim()}
         </Text>
       </View>
       
@@ -102,7 +102,7 @@ export default function DownloadPDFBtn( { designacoes }: { designacoes: Partes[]
         </Text>
 
         <Text style={styles.canticos}>
-          {designacoes?.canticos[1]}
+          {designacoes?.canticos[1].trim()}
         </Text>
       </View>
 
@@ -114,7 +114,7 @@ export default function DownloadPDFBtn( { designacoes }: { designacoes: Partes[]
         </Text>
 
         <Text style={{flexBasis: "25%", paddingLeft: "6px"}}>
-          - {designacoes?.outros.find((parte) => parte.nome === "Leitor")?.participante}
+          - {designacoes?.outros.find((parte) => parte.nome === "Leitor")?.participante?.trim()}
         </Text>
       </View>
 
@@ -124,11 +124,11 @@ export default function DownloadPDFBtn( { designacoes }: { designacoes: Partes[]
         </Text>
 
         <Text style={styles.canticos}>
-          {designacoes?.canticos[2]}
+          {designacoes?.canticos[2].trim()}
         </Text>
 
         <Text style={{flexBasis: "25%", paddingLeft: "6px"}}>
-          Oração: {designacoes?.outros.find((parte) => parte.nome === "Oração Final")?.participante}
+          Oração: {designacoes?.outros.find((parte) => parte.nome === "Oração Final")?.participante?.trim()}
         </Text>
       </View>
     </View>
