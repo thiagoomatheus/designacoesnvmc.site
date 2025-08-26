@@ -1,6 +1,58 @@
 version: '3.7'
 
 services:
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    restart: on-failure
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - evolution_mongodb_data:/data/db
+      - evolution_mongodb_configdb:/data/configdb
+    expose:
+      - 27017
+    networks:
+      - coolify
+
+  mongo-express:
+    container_name: mongodb-express
+    image: mongo-express
+    restart: on-failure
+    ports:
+      - 8083:8081
+    depends_on:
+      - mongodb
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGODB_USER}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGODB_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
+    links:
+      - mongodb
+    networks:
+      - coolify
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: on-failure
+    ports:
+      - 6379:6379
+    command: >
+      redis-server
+      --port 6379
+      --appendonly yes
+    volumes:
+      - evolution_redis:/data
+    networks:
+      - coolify
 
   evolution-api:
     container_name: evolution_api-prod
@@ -17,6 +69,30 @@ services:
       - QRCODE_LIMIT=${QRCODE_LIMIT}
       - AUTHENTICATION_TYPE=${AUTHENTICATION_TYPE}
       - AUTHENTICATION_API_KEY=${AUTHENTICATION_API_KEY}
+      - DATABASE_ENABLED=true
+      - DATABASE_CONNECTION_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongobd/?authSource=admin&readPreference=primary&ssl=false&directConnection=true
+      - DATABASE_CONNECTION_DB_PREFIX_NAME=evo
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - STORE_MESSAGES=true
+      - STORE_MESSAGE_UP=true
+      - STORE_CONTACTS=true
+      - STORE_CHATS=true
+      - CLEAN_STORE_CLEANING_INTERVAL=7200
+      - CLEAN_STORE_MESSAGES=true
+      - CLEAN_STORE_MESSAGE_UP=true
+      - CLEAN_STORE_CONTACTS=true
+      - CLEAN_STORE_CHATS=true
+      - DATABASE_ENABLED=true
+      - DATABASE_CONNECTION_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true
+      - DATABASE_CONNECTION_DB_PREFIX_NAME=evolution
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_URI=redis://redis:6379
+      - CACHE_REDIS_PREFIX_KEY=evolution
+      - CACHE_REDIS_TTL=604800
+    depends_on:
+      - mongodb
+      - redis
     ports:
       - "8081:8080"
     volumes:
@@ -61,3 +137,5 @@ volumes:
   evolution_store:
   evolution_instances:
   prisma_volume:
+  evolution_mongodb_data:
+  evolution_mongodb_configdb:
