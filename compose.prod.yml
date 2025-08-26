@@ -8,8 +8,8 @@ services:
     ports:
       - 27017:27017
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${SERVICE_USER_MONGODB}
+      - MONGO_INITDB_ROOT_PASSWORD=${SERVICE_PASSWORD_MONGODB}
       - PUID=1000
       - PGID=1000
     volumes:
@@ -60,7 +60,7 @@ services:
       - CLEAN_STORE_CONTACTS=true
       - CLEAN_STORE_CHATS=true
       - DATABASE_ENABLED=true
-      - DATABASE_CONNECTION_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true
+      - DATABASE_CONNECTION_URI=mongodb://${SERVICE_USER_MONGODB}:${SERVICE_PASSWORD_MONGODB}@mongodb:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true
       - DATABASE_CONNECTION_DB_PREFIX_NAME=evolution
       - DATABASE_SAVE_DATA_CONTACTS=true
       - CACHE_REDIS_ENABLED=true
