@@ -4,6 +4,7 @@ import { auth } from "../lib/auth/auth"
 import SessaoConexaoWhatsApp from "./components/sessaoConexaoWhatsApp"
 import SessaoAltualizarInfoUsuario from "./components/sessaoAltualizarInfoUsuario"
 import { prisma } from "../lib/prisma/prisma"
+import BtnRecarregaContatos from "./components/BtnRecarregaContatos"
 
 export default async function Page() {
 
@@ -53,10 +54,25 @@ export default async function Page() {
                     <SessaoAltualizarInfoUsuario cong={usuario?.cong} funcao={usuario?.funcao} />
                 </div>
                 {usuario.funcao === "designar" && (
-                    <div className="flex flex-col gap-5 items-center p-2 lg:p-5 rounded-lg w-full neumorphism dark:bg-gray-700 dark:shadow-none">
-                        <h2>Conectar WhatsApp</h2>
-                        <p>Conectando seu WhatsApp é possível enviar as designações para os participantes.</p>
-                        <SessaoConexaoWhatsApp instancia={usuario.instanciaWhatsApp ? usuario.instanciaWhatsApp : null} status={statusIntanciaWhatsApp} emailUsuario={usuario.email} />
+                    <div className="flex flex-col gap-5 p-2 lg:p-5 rounded-lg w-full neumorphism dark:bg-gray-700 dark:shadow-none">
+                        <h2 className="self-center">WhatsApp</h2>
+                        <div className="flex flex-col gap-2 p-2 md:p-5 rounded-lg border-t-4 border-gray-400">
+                            <h3>Conexão</h3>
+                            <span className="flex flex-col md:flex-row items-center justify-between gap-2">
+                                <p>Conectando seu WhatsApp é possível enviar as designações para os participantes.</p>
+                                <SessaoConexaoWhatsApp
+                                    instancia={usuario.instanciaWhatsApp ? usuario.instanciaWhatsApp : null}
+                                    status={statusIntanciaWhatsApp} emailUsuario={usuario.email}
+                                />
+                            </span>
+                        </div>
+                        {usuario.instanciaWhatsApp && statusIntanciaWhatsApp === "open" && (
+                            <div className="flex flex-col gap-2 md:gap-5 p-2 md:p-5 rounded-lg border-t-4 border-gray-400">
+                                <h3>Contatos</h3>
+                                <p>Clique no botão abaixo para recarregar ou atualizar sua lista de contatos.</p>
+                                <BtnRecarregaContatos instancia={usuario.instanciaWhatsApp} />
+                            </div>
+                        )}
                     </div>
                 )}
             </section>
