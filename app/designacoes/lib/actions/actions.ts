@@ -168,12 +168,12 @@ export async function notificarParticipante(designacaoId: string, parametrosDaMe
 
         const hoje = new Date()
 
-        if (getWeek(hoje) === parseInt(designacao.semana.slice(0, 2))) return { error: {
+        if (getWeek(hoje, { weekStartsOn: 1}) === parseInt(designacao.semana.slice(0, 2))) return { error: {
             code: 400,
             message: "A semana selecionada é a atual. Não é possível agendar a notificação para esta semana."
         }}
 
-        if (getWeek(hoje) > parseInt(designacao.semana.slice(0, 2))) return { error: {
+        if (getWeek(hoje, { weekStartsOn: 1}) > parseInt(designacao.semana.slice(0, 2))) return { error: {
             code: 400,
             message: "A semana selecionada já passou. Não é possível agendar a notificação para esta semana."
         }}
