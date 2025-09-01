@@ -182,7 +182,7 @@ async function scrapePartes(data: Date,numeroSemana: number, diaReuniao: string)
     const partes: Partes = {
         canticos: [],
         capitulos: "",
-        semana: `${numeroSemana}/${ano}`,
+        semana: `${numeroSemana}/${periodo.slice(-4)}`,
         diaReuniao: diaReuniao,
         outros: [
             {nome: "Presidente", participante: ""},
