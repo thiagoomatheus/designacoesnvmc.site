@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 
 export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario }: {
     instancia: string | null
-    status: "open" | "close" | undefined
+    status: "open" | "close" | "connecting" | undefined
     emailUsuario: string
 } ) {
 
@@ -43,7 +43,7 @@ export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario
                 }}
                 className="bg-red-500">Desconectar</Btn>
             )}
-            {(instancia && statusInstancia !== "open") && (
+            {(instancia && (statusInstancia === "close" || statusInstancia === "connecting")) && (
                 <>
                     <Btn onClick={async () => {
 
