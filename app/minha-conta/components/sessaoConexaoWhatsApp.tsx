@@ -130,7 +130,7 @@ export default function SessaoConexaoWhatsApp( { instancia, status, emailUsuario
                     </div>
                 </Modal>
             )}
-            {(!instancia || !statusInstancia) || (instancia && statusInstancia === "close") && (
+            {(!instancia || !statusInstancia) || (instancia && statusInstancia !== "open") && (
                 <>
                     <Btn onClick={async () => {
 
