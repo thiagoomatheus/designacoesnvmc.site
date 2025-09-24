@@ -46,8 +46,6 @@ services:
       - evolution_store:/evolution/store
       - evolution_instances:/evolution/instances
 
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
 networks:
   my_network:
     external: true
