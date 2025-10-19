@@ -12,6 +12,23 @@ import { Parte as ParteType, Partes } from "@/app/lib/types/types"
 import { prisma } from "@/app/lib/prisma/prisma"
 import { Parte, Semana } from "@prisma/client"
 
+const sortPartes = (partes: Partes[]) => {
+    partes.sort((a, b) => {
+        // Divide a string "MM/YYYY" em semana e ano para 'a'
+        const [semanaA, anoA] = a.semana.split("/").map(Number);
+        // Divide a string "MM/YYYY" em semana e ano para 'b'
+        const [semanaB, anoB] = b.semana.split("/").map(Number);
+
+        // Primeiro, compare os anos
+        if (anoA !== anoB) {
+            return anoA - anoB; // Se os anos forem diferentes, ordene pelo ano
+        } else {
+            // Se os anos forem iguais, compare as semanas
+            return semanaA - semanaB; // Se os anos forem iguais, ordene pela semana
+        }
+    })
+}
+
 async function getPartes(year: number, week: number, layout: number, cong: number) {
     const semanas: string[] = []
 
@@ -82,6 +99,8 @@ async function getPartes(year: number, week: number, layout: number, cong: numbe
             }))
         })
     })
+
+    sortPartes(partes)
 
     return partes
 }
@@ -403,7 +422,7 @@ export async function GET(req:NextRequest) {
             }
         }
 
-        partes.sort((a, b) => parseInt(a.semana.split("/")[0]) - parseInt(b.semana.split("/")[0]))
+        sortPartes(partes)
 
         return NextResponse.json({ partes }, { status: 200 })
     } catch (error) {
