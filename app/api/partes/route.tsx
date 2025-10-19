@@ -17,8 +17,8 @@ async function getPartes(year: number, week: number, layout: number, cong: numbe
 
     for (let i = 0; i < layout; i++) {
         if (week + i > 52) {
-            semanas.push(`${(week + i - 52) - 52}/${year + 1}`)
-            break
+            semanas.push(`${(week + i) - 52}/${year + 1}`)
+            continue
         }
         semanas.push(`${week + i}/${year}`)
     }
