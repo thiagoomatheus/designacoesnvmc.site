@@ -32,6 +32,8 @@ ARG AUTH_REDIRECT_PROXY_URL
 ENV AUTH_REDIRECT_PROXY_URL=${AUTH_REDIRECT_PROXY_URL}
 ARG AUTHENTICATION_API_KEY
 ENV AUTHENTICATION_API_KEY=${AUTHENTICATION_API_KEY}
+ARG SENDGRID_API_KEY
+ENV SENDGRID_API_KEY=${SENDGRID_API_KEY}
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at build time
@@ -70,6 +72,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modul
 
 COPY --from=builder --chown=nextjs:nodejs /app/app/lib/notificacao/ ./notificacao
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/date-fns ./node_modules/date-fns
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nomailer ./node_modules/nodemailer
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nodemailer-sendgrid ./node_modules/nodemailer-sendgrid
 
 # Environment variables must be redefined at run time
 ARG ASAAS_LINK_PAGAMENTO_UNICO
@@ -92,6 +96,8 @@ ARG AUTH_REDIRECT_PROXY_URL
 ENV AUTH_REDIRECT_PROXY_URL=${AUTH_REDIRECT_PROXY_URL}
 ARG AUTHENTICATION_API_KEY
 ENV AUTHENTICATION_API_KEY=${AUTHENTICATION_API_KEY}
+ARG SENDGRID_API_KEY
+ENV SENDGRID_API_KEY=${SENDGRID_API_KEY}
 
 # Uncomment the following line to disable telemetry at run time
 # ENV NEXT_TELEMETRY_DISABLED 1
