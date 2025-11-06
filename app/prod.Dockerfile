@@ -72,7 +72,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modul
 
 COPY --from=builder --chown=nextjs:nodejs /app/app/lib/notificacao/ ./notificacao
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/date-fns ./node_modules/date-fns
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nomailer ./node_modules/nodemailer
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nodemailer ./node_modules/nodemailer
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nodemailer-sendgrid ./node_modules/nodemailer-sendgrid
 
 # Environment variables must be redefined at run time
