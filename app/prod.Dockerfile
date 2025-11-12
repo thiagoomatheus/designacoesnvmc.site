@@ -76,6 +76,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nodemailer ./node_mo
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nodemailer-sendgrid ./node_modules/nodemailer-sendgrid
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@sendgrid ./node_modules/@sendgrid
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/request ./node_modules/request
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/extend ./node_modules/extend
 
 # Environment variables must be redefined at run time
 ARG ASAAS_LINK_PAGAMENTO_UNICO
