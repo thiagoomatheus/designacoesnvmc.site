@@ -71,12 +71,72 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
 COPY --from=builder --chown=nextjs:nodejs /app/app/lib/notificacao/ ./notificacao
+
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/date-fns ./node_modules/date-fns
+
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nodemailer ./node_modules/nodemailer
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/nodemailer-sendgrid ./node_modules/nodemailer-sendgrid
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@sendgrid ./node_modules/@sendgrid
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@sendgrid/mail ./node_modules/@sendgrid/mail
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@sendgrid/client ./node_modules/@sendgrid/client
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@sendgrid/helpers ./node_modules/@sendgrid/helpers
+
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/request ./node_modules/request
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/form-data ./node_modules/form-data
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/combined-stream ./node_modules/combined-stream
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/delayed-stream ./node_modules/delayed-stream
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/asynckit ./node_modules/asynckit
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/extend ./node_modules/extend
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/json-stringify-safe ./node_modules/json-stringify-safe
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/aws-sign2 ./node_modules/aws-sign2
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/aws4 ./node_modules/aws4
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/caseless ./node_modules/caseless
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/forever-agent ./node_modules/forever-agent
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/http-signature ./node_modules/http-signature
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/is-typedarray ./node_modules/is-typedarray
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/isstream ./node_modules/isstream
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/mime-types ./node_modules/mime-types
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/mime-db ./node_modules/mime-db
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/oauth-sign ./node_modules/oauth-sign
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/performance-now ./node_modules/performance-now
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/qs ./node_modules/qs
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/safe-buffer ./node_modules/safe-buffer
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/tunnel-agent ./node_modules/tunnel-agent
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/uuid ./node_modules/uuid
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/har-validator ./node_modules/har-validator
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/har-schema ./node_modules/har-schema
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/ajv ./node_modules/ajv
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/fast-deep-equal ./node_modules/fast-deep-equal
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/fast-json-stable-stringify ./node_modules/fast-json-stable-stringify
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/json-schema-traverse ./node_modules/json-schema-traverse
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/uri-js ./node_modules/uri-js
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/punycode ./node_modules/punycode
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/jsprim ./node_modules/jsprim
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/extsprintf ./node_modules/extsprintf
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/json-schema ./node_modules/json-schema
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/verror ./node_modules/verror
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/core-util-is ./node_modules/core-util-is
+
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/tough-cookie ./node_modules/tough-cookie
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/psl ./node_modules/psl
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/sshpk ./node_modules/sshpk
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/asn1 ./node_modules/asn1
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/assert-plus ./node_modules/assert-plus
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/bcrypt-pbkdf ./node_modules/bcrypt-pbkdf
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/dashdash ./node_modules/dashdash
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/ecc-jsbn ./node_modules/ecc-jsbn
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/getpass ./node_modules/getpass
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/jsbn ./node_modules/jsbn
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/safer-buffer ./node_modules/safer-buffer
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/tweetnacl ./node_modules/tweetnacl
+
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/chalk ./node_modules/chalk
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/ansi-styles ./node_modules/ansi-styles
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/color-convert ./node_modules/color-convert
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/color-name ./node_modules/color-name
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/escape-string-regexp ./node_modules/escape-string-regexp
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/supports-color ./node_modules/supports-color
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/has-flag ./node_modules/has-flag
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/deepmerge ./node_modules/deepmerge
 
 # Environment variables must be redefined at run time
 ARG ASAAS_LINK_PAGAMENTO_UNICO
